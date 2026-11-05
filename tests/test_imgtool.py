@@ -94,6 +94,14 @@ def test_grayscale_mode(rgb_image):
     assert to_grayscale(img).mode == "L"
 
 
+def test_grayscale_jpeg_keeps_single_channel(rgb_image, tmp_path):
+    """灰度图存 JPG 后仍应是单通道，而不是被撑成三通道彩图。"""
+    img = Image.open(rgb_image)
+    out_path = tmp_path / "gray.jpg"
+    saved, _ = save_image(to_grayscale(img), str(out_path))
+    assert Image.open(saved).mode == "L"
+
+
 def test_grayscale_keeps_alpha(alpha_image):
     img = Image.open(alpha_image)
     assert to_grayscale(img).mode == "LA"

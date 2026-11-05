@@ -88,6 +88,9 @@ def prepare_for_save(img: Image.Image, fmt: str) -> Image.Image:
             base = img.convert("RGBA")
             canvas = Image.new("RGBA", base.size, (255, 255, 255, 255))
             return Image.alpha_composite(canvas, base).convert("RGB")
+        # 灰度/CMYK 的 JPEG 本身合法，保原模式，避免灰度图被存成三通道
+        if img.mode in ("L", "CMYK"):
+            return img
         return img.convert("RGB")
 
     if fmt == "GIF":
