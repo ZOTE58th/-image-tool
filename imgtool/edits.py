@@ -73,3 +73,29 @@ def crop(
         )
 
     return img.crop((left, top, right, bottom))
+
+
+def rotate(img: Image.Image, angle: int) -> Image.Image:
+    """顺时针旋转 90 / 180 / 270 度，画布自动扩展。"""
+    if angle not in VALID_ANGLES:
+        raise ImgToolError(f"旋转角度仅支持 90、180、270 度，当前为 {angle}")
+    # Pillow 的 rotate 是逆时针，取负号换成顺时针
+    return img.rotate(-angle, expand=True)
+
+
+def flip(img: Image.Image, direction: str) -> Image.Image:
+    """水平或垂直翻转。"""
+    if direction in ("horizontal", "h"):
+        return img.transpose(Image.FLIP_LEFT_RIGHT)
+    if direction in ("vertical", "v"):
+        return img.transpose(Image.FLIP_TOP_BOTTOM)
+    raise ImgToolError(f"翻转方向仅支持 horizontal 或 vertical，当前为 {direction}")
+
+
+def to_grayscale(img: Image.Image) -> Image.Image:
+    """转灰度图。带透明通道时只对颜色通道灰度化，alpha 原样保留。"""
+    if img.mode in ("RGBA", "LA", "P"):
+        rgba = img.convert("RGBA")
+        gray = rgba.convert("L")
+        return Image.merge("LA", (gray, rgba.getchannel("A")))
+    return img.convert("L")
