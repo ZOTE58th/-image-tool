@@ -240,7 +240,7 @@ image-tool/
 │   ├── info.py          图片信息采集与排版输出
 │   └── errors.py        统一的 ImgToolError
 ├── tests/
-│   └── test_imgtool.py  15 个单元测试
+│   └── test_imgtool.py  16 个单元测试
 ├── pyproject.toml       项目元数据与依赖
 ├── uv.lock              依赖锁定文件
 ├── .gitignore           排除 .venv、__pycache__、输出目录
